@@ -1,0 +1,61 @@
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+
+const RunawayButtonGame = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // Fungsi untuk menggerakkan butang Yes bila tetikus menghampiri
+  const handleMouseMove = (e) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  };
+
+  // Fungsi bila butang No ditekan
+  const handleNoClick = () => {
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+  };
+
+  return (
+    <Card className="w-full max-w-lg mx-auto p-8" onMouseMove={handleMouseMove}>
+      <CardContent className="space-y-8">
+        <div className="text-center text-2xl font-bold mb-8">
+          Apakah anda sudah tidak suka mandi? 🚿
+        </div>
+
+        <div className="relative h-40 flex items-center justify-center">
+          {/* Butang Yes yang akan melarikan diri */}
+          <button
+            className="absolute px-8 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all duration-200"
+            style={{
+              transform: `translate(${
+                mousePosition.x > 0 ? Math.sin(Date.now() / 500) * 100 : 0
+              }px, ${
+                mousePosition.y > 0 ? Math.cos(Date.now() / 500) * 50 : 0
+              }px)`,
+            }}
+          >
+            Yes
+          </button>
+
+          {/* Butang No yang tetap */}
+          <button
+            className="absolute px-8 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            onClick={handleNoClick}
+          >
+            No
+          </button>
+        </div>
+
+        {/* Mesej kejayaan */}
+        {showSuccess && (
+          <div className="text-center text-green-600 font-bold animate-bounce">
+            Bagus! Mandi itu penting untuk kesihatan! 🌟
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+export default RunawayButtonGame;
